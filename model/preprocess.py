@@ -1,5 +1,4 @@
 from tokenizer import Tokenizer
-import sys, re 
 from collections import Counter
 from tqdm import tqdm
 
