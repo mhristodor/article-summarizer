@@ -16,7 +16,6 @@ class Tokenizer(object):
 
         return False
 
-
     def whitespace(self,char):
         if char in self.whiteChar:
             return True
@@ -35,8 +34,6 @@ class Tokenizer(object):
 
         tokens = text.split()
         return tokens
-
-
 
     def punct(self,char):
 
