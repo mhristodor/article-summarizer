@@ -1,4 +1,5 @@
 import torch
+import math
 from torch import nn
 import torch.nn.functional as f
 
@@ -62,7 +63,7 @@ class MultiHeadAttention(nn.Module):
 
 		return score.matmul(v)
 
-	def forward(self, x, mask):
+	def forward(self, x, mask=None):
 		
 		y = x
 		qkv = self.linear(x)
@@ -72,7 +73,7 @@ class MultiHeadAttention(nn.Module):
 		v = qkv[:,:, self.output*2:]
 
 		q, k, v = [self.headsplit(t) for t in (q,k,v)]
-		q, k, v = [t.transpose(1,2) for (q,k,v)]
+		q, k, v = [t.transpose(1,2) for t in (q,k,v)]
 
 		score = self.attention(q, k, v, mask, self.dropout)
 		score = score.transpose(1,2).contiguous().view(score.shape[0], -1, self.output)
@@ -94,7 +95,7 @@ class Encoder(nn.Module):
 		self.dropout1 = nn.Dropout(dropout)
 		self.dropout2 = nn.Dropout(dropout)
 
-	def forward(self, x, mask):
+	def forward(self, x, mask=None):
 		
 		x1 = self.norm1(x)
 		x = x + self.dropout1(self.mha(x1, mask=mask))

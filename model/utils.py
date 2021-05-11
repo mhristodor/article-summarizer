@@ -1,5 +1,14 @@
 import random
 
+def get_batch(loader, loader_iter):
+    try:
+        batch = next(loader_iter)
+    except StopIteration:
+        loader_iter = iter(loader)
+        batch = next(loader_iter)
+
+    return batch, loader_iter
+
 def breakDownPair(tokensA, tokensB, max_tokens):
 
     while True:
@@ -49,7 +58,7 @@ def prepareTraining(articles,index,max_seq):
                 tokensB = []
                 rand_next = False
 
-                if len(chunk) == 1 or random.random() < 0.5:
+                if len(chunk) == 1 or random.random() < -1:
                     rand_next = True
                     targetB_len = target_seq - len(tokensA)
 

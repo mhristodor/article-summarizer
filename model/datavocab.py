@@ -26,9 +26,6 @@ class Data(object):
 
 		data = []
 		for index, page in enumerate(pages):
-			print(page)
-			print(prepareTraining(pages,index,self.maximum))
-			exit()
 			data.extend(prepareTraining(pages,index,self.maximum))
 
 		return data
@@ -37,9 +34,9 @@ class Data(object):
 class Vocab(object):
 	def __init__(self, file, minim):
 		
-		PAD, UNK, CLS, SEP, MASK, NUM, NOT_ROMANIAN = '<-PAD->', '<-UNK->', '<-CLS->', '<-SEP->', '<-MASK->', '<-NUM->', '<-NOT_ROMANIAN->'
+		PAD, UNK, MASK, NUM, NOT_ROMANIAN = '<-PAD->', '<-UNK->', '<-MASK->', '<-NUM->', '<-NOT_ROMANIAN->'
 		number_regex = re.compile(r"^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$")
-		tokens = [PAD, UNK, NUM, NOT_ROMANIAN, CLS, SEP, MASK]
+		tokens = [PAD, UNK, NUM, NOT_ROMANIAN, MASK]
 
 		f = open(file,"r",encoding = "utf-8")
 
@@ -61,6 +58,8 @@ class Vocab(object):
 		self.not_rom_id = self.id[NOT_ROMANIAN]
 		self.padding_id = self.id[PAD]
 		
+		self.mask_id = self.id[MASK]
+		
 		self.unk_id = self.id[UNK]
 		self.num_id = self.id[NUM]
 
@@ -72,8 +71,3 @@ class Vocab(object):
 				return True
 
 		return False
-
-
-data = Data(r"F:\corpus\parsed_corpus.txt",128)
-data.load()
-
